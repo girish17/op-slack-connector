@@ -1,0 +1,26 @@
+{
+  "name": "ranger-slack-connector",
+  "version": "0.0.1",
+  "description": "Provides ranger (open-project) connector in Slack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "keywords": [
+    "ranger",
+    "openproject",
+    "connector",
+    "slack"
+  ],
+  "author": "gm",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "debug": "^4.1.1",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "querystring": "^0.2.0"
+  }
+}

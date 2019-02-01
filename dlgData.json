@@ -1,0 +1,65 @@
+{
+        "callback_id": "timeLogDialog",
+        "title": "Spent Time",
+        "submit_label": "Save",
+        "notify_on_cancel": true,
+        "elements": [
+            {
+                "type": "select",
+                "label": "Projects",
+                "name": "projects",
+                "data_source": "external",
+                "min_query_length": 2
+            },
+            {
+                "type": "text",
+                "subtype": "number",
+                "label": "Hours",
+                "name": "hours"
+            },
+            {
+                "type": "text",
+                "label": "Comment",
+                "name": "comment",
+                "optional": true
+            },
+            {
+                "type": "select",
+                "label": "Activity",
+                "name": "work_package",
+                "options": [
+                    {
+                        "label": "Development",
+                        "value": "3"
+                    },
+                    {
+                        "label": "Management",
+                        "value": "1"
+                    },
+                    {
+                        "label": "Specification",
+                        "value": "2"
+                    },
+                    {
+                        "label": "Testing",
+                        "value": "4"
+                    },
+                    {
+                        "label": "Support",
+                        "value": "5"
+                    },
+                    {
+                        "label": "Other",
+                        "value": "6"
+                    }
+                ]
+            },
+            {
+                "type": "text",
+                "subtype": "number",
+                "label": "Billable Hours",
+                "name": "billable_hours",
+                "optional": true
+            }
+        ]
+}

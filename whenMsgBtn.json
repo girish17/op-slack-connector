@@ -1,0 +1,39 @@
+{
+    "text": "*For which day would you like to log time :smile?*",
+    "attachments": [
+        {
+            "text": "",
+            "fallback": "Day for log time",
+            "callback_id": "when_button",
+            "color": "#3AA3E3",
+            "attachment_type": "default",
+            "actions": [
+                {
+                    "name": "whenButton",
+                    "text": "Today",
+                    "type": "button",
+                    "value": "today"
+                },
+                {
+                    "name": "whenButton",
+                    "text": "Yesterday",
+                    "type": "button",
+                    "value": "yesterday"
+                },
+                {
+                    "name": "whenButton",
+                    "text": "Some ol' day",
+                    "type": "button",
+                    "style": "danger",
+                    "value": "otherDay",
+                    "confirm": {
+                        "title": "And so we do",
+                        "text": "Hope you remember what you did!",
+                        "ok_text": "Yes",
+                        "dismiss_text": "No"
+                    }
+                }
+            ]
+        }
+    ]
+}
