@@ -14,45 +14,58 @@
   var dotenv = require('dotenv');
   dotenv.load();
 
-  var dialogData = require('./dlgData.json');
-  var whenButton = require('./whenMsgBtn.json');
+  var dialogData = require('./UI_Element_json/dlgData.json');
+  var whenButton = require('./UI_Element_json/whenMsgBtn.json');
+  var selectWP   = require('./UI_Element_json/selectWP.json');
 
   app.post('/', (req, res) => {
-    const {text, trigger_id, channel_id, user_id} = req.body;
+    const {text, trigger_id, channel_id, user_id, payload, command} = req.body;
     console.log(JSON.stringify(req.body, null, 2));
-    if (! /^[1-9][0-9]{0,1}$/.test(text)) {
+
+    if (! /^[1-9][0-9]{0,1}$/.test(text) && command === "/logtime") {
       // not a one or two-digit number
-      res.send('`1 hour to 99 hours works well here :smile:`').status(400);
+      res.send('*1 hour to 99 hours works well here :) *').status(400);
       return;
     }
+    else if(payload)
+    {
+        const {trigger_id, callback_id} = JSON.parse(payload);
+        if(callback_id === "wp_selection")
+        {
+          let dialog = {
+          token: process.env.BOT_ACCESS_TOKEN,
+          trigger_id,
+          dialog: JSON.stringify(dialogData)
+          };
+          axios.post('https://slack.com/api/dialog.open', qs.stringify(dialog)).then((result) => {
+           console.log('dialog.open: %o', result.data);
+          }).catch((err) => {
+           console.log('dialog.open call failed: %o', err);
+           res.send("`Can't open dialog!`").status(500);
+          });
+        }   
+        else if(callback_id === "timeLogDialog")
+        {
+          /*save data to open project*/
+          //TODO
+        }
+    }
     else {
-      let buttonMsg = {
+      let selectWPMsg = {
         token: process.env.BOT_ACCESS_TOKEN,
         channel: channel_id,
-        text: whenButton.text,
+        text: selectWP.text,
         user: user_id,
         as_user: true,
-        attachments: JSON.stringify(whenButton.attachments)
+        attachments: JSON.stringify(selectWP.attachments)
       };
 
       axios.post('https://slack.com/api/chat.postEphemeral',
-      qs.stringify(buttonMsg)).then((result) => {
+      qs.stringify(selectWPMsg)).then((result) => {
         console.log('message posted: %o', result);
         if(result.data.ok)
         {
-          res.send('ok..').status(200);
-          /* let dialog = {
-            token: process.env.BOT_ACCESS_TOKEN,
-            trigger_id,
-            dialog: JSON.stringify(dialogData)
-          };
-      
-          axios.post('https://slack.com/api/dialog.open', qs.stringify(dialog)).then((result) => {
-            console.log('dialog.open: %o', result.data);
-          }).catch((err) => {
-            console.log('dialog.open call failed: %o', err);
-            res.send("`Can't open dialog!`").status(500);
-          }); */
+          return;
         }
         else 
         {
@@ -62,40 +75,39 @@
         console.log('message post failed: %o', err);
         res.send("`Can't send message`").status(500);
       });
-
     }
   });
 
   app.post('/getProjectsForUser', (req, res) => {
-    const {callback_id} = JSON.parse(req.body.payload);
-    if(callback_id === "timeLogDialog")
+    const {callback_id, value} = JSON.parse(req.body.payload);
+    if(callback_id === "wp_selection")
     {
       axios({
+        url: '/projects',
         method: 'get',
-        url: 'https://ranger.42hertz.com/api/v3/projects/',
-        headers: {
-          Authorization: 'Basic '+process.env.RANGER_ACCESS_TOKEN
+        baseURL: 'https://ranger.42hertz.com/api/v3',
+        auth: {
+          username: 'apikey',
+          password: process.env.RANGER_ACCESS_TOKEN
         }
-      }).then(function (response) {     
-
-        /*res.send(JSON.stringify({
-              "options": [
-                {
-                  "label": "[UXD-342] The button color should be artichoke green, not jalapeño",
-                  "value": "UXD-342"
-                },
-                {
-                  "label": "[FE-459] Remove the marquee tag",
-                  "value": "FE-459"
-                },
-                {
-                  "label": "[FE-238] Too many shades of gray in master CSS",
-                  "value": "FE-238"
-                }
-              ]
-            })
-          );*/
+      }).then(function (response) {  
+        console.log("Response from ranger: %o", response);
+        let optArray = [];
+        response.data._embedded.elements.forEach(element => {
+          if(element.identifier.match(value.toLowerCase()))
+          {
+            optArray.push({
+            "text": element.name,
+            "value": element.id
+            });
+          }
         });
+        res.type('application/json').send(JSON.stringify({"options": optArray})).status(200);
+      });
+    }
+    if(callback_id === "when_button")
+    {
+
     }
     else
     {
