@@ -16,7 +16,10 @@
 
   var dialogData = require('./UI_Element_json/dlgData.json');
   var whenButton = require('./UI_Element_json/whenMsgBtn.json');
-  var selectWP   = require('./UI_Element_json/selectWP.json');
+  var selProject = require('./UI_Element_json/selectProject.json');
+
+  let projectId = '';
+  let hoursLog = 0;
 
   app.post('/', (req, res) => {
     const {text, trigger_id, channel_id, user_id, payload, command} = req.body;
@@ -29,8 +32,9 @@
     }
     else if(payload)
     {
-        const {trigger_id, callback_id} = JSON.parse(payload);
-        if(callback_id === "wp_selection")
+        hoursLog = parseInt(text);
+        const {trigger_id, callback_id, actions, type} = JSON.parse(payload);
+        if(callback_id === "project_selection")
         {
           let dialog = {
           token: process.env.BOT_ACCESS_TOKEN,
@@ -38,38 +42,80 @@
           dialog: JSON.stringify(dialogData)
           };
           axios.post('https://slack.com/api/dialog.open', qs.stringify(dialog)).then((result) => {
-           console.log('dialog.open: %o', result.data);
+          console.log('dialog.open: %o', result.data);
+          /*set projectId for callback*/
+          projectId = actions.pop().selected_options.pop().value;
+            
           }).catch((err) => {
-           console.log('dialog.open call failed: %o', err);
-           res.send("`Can't open dialog!`").status(500);
+          console.log('dialog.open call failed: %o', err);
+          res.send("`Can't open dialog!`").status(500);
           });
         }   
         else if(callback_id === "timeLogDialog")
         {
-          /*save data to open project*/
-          //TODO
+          if(type === "dialog_submission")
+          {
+             const {submission} = JSON.parse(req.body.payload);
+              /*log time data to open project*/
+              axios({
+                url: '/time_entries',
+                method: 'post',
+                baseURL: 'https://ranger.42hertz.com/api/v3',
+                data: {
+                   "_links": {
+                     "project": {
+                       "href": "/api/v3/projects/"+projectId
+                     },
+                     "activity": {
+                       "href": "/api/v3/time_entries/activities/"+submission.activity_id
+                     },
+                     "workPackage": {
+                       "href": "/api/v3/work_packages/"+submission.work_package_id
+                     }
+                   },
+                   "hours": hoursLog,
+                   "comment": submission.comments,
+                   "spentOn": submission.spent_on,
+                   "customField2": submission.billable_hours,
+                },
+                auth: {
+                  username: 'apikey',
+                  password: process.env.RANGER_ACCESS_TOKEN
+                }
+              }).then((response) => {
+                  console.log("Time entry save response: %o", response);
+              }).catch((error) => {
+                console.log("Ranger time entries create error: %o", error.message);
+              });
+          }
+          else if(type === "dialog_cancellation")
+          {
+             res.send("Time not logged!").status(400);
+          }
+          
         }
     }
     else {
-      let selectWPMsg = {
+      let selectProjectMsg = {
         token: process.env.BOT_ACCESS_TOKEN,
         channel: channel_id,
-        text: selectWP.text,
+        text: selProject.text,
         user: user_id,
         as_user: true,
-        attachments: JSON.stringify(selectWP.attachments)
+        attachments: JSON.stringify(selProject.attachments)
       };
 
       axios.post('https://slack.com/api/chat.postEphemeral',
-      qs.stringify(selectWPMsg)).then((result) => {
+      qs.stringify(selectProjectMsg)).then((result) => {
         console.log('message posted: %o', result);
         if(result.data.ok)
         {
+          res.send().status(200);
           return;
         }
         else 
         {
-          console.log('Log time message post failed!');
+          console.log('select project post failed!');
         }
       }).catch((err) => {
         console.log('message post failed: %o', err);
@@ -79,8 +125,8 @@
   });
 
   app.post('/getProjectsForUser', (req, res) => {
-    const {callback_id, value} = JSON.parse(req.body.payload);
-    if(callback_id === "wp_selection")
+    const {callback_id, value, type} = JSON.parse(req.body.payload);
+    if(callback_id === "project_selection")
     {
       axios({
         url: '/projects',
@@ -91,7 +137,7 @@
           password: process.env.RANGER_ACCESS_TOKEN
         }
       }).then(function (response) {  
-        console.log("Response from ranger: %o", response);
+        console.log("Projects obtained from ranger: %o", response);
         let optArray = [];
         response.data._embedded.elements.forEach(element => {
           if(element.identifier.match(value.toLowerCase()))
@@ -103,8 +149,38 @@
           }
         });
         res.type('application/json').send(JSON.stringify({"options": optArray})).status(200);
+        return;
       });
     }
+    if(callback_id === "timeLogDialog")
+    {
+      let optArray = [];
+        axios({
+          url: '/work_packages',
+          method: 'get',
+          baseURL: 'https://ranger.42hertz.com/api/v3',
+          params: {
+            id: projectId
+          }, 
+          auth: {
+            username: 'apikey',
+            password: process.env.RANGER_ACCESS_TOKEN
+          }
+        }).then((response) => {  
+          console.log("WP obtained from ranger: %o", response);
+          response.data._embedded.elements.forEach(element => {
+            if(element.subject.toLowerCase().match(value.toLowerCase()))
+            {
+              optArray.push({
+              "label": element.subject,
+              "value": element.id
+              });
+            }
+          });
+          res.send({"options": optArray}).status(200);
+          return;
+        });
+      }
     if(callback_id === "when_button")
     {
 

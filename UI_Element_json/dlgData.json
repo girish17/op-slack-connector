@@ -5,21 +5,28 @@
         "notify_on_cancel": true,
         "elements": [
             {
+                "type": "select",
+                "label": "Work package",
+                "name": "work_package_id",
+                "placeholder": "Choose Work Package",
+                "data_source": "external"
+            },
+            {
                 "type": "text",
                 "label": "Date",
-                "name": "date",
+                "name": "spent_on",
                 "placeholder": "YYYY-MM-DD"
             },
             {
                 "type": "text",
                 "label": "Comment",
-                "name": "comment",
+                "name": "comments",
                 "optional": true
             },
             {
                 "type": "select",
                 "label": "Activity",
-                "name": "work_package",
+                "name": "activity_id",
                 "options": [
                     {
                         "label": "Development",
