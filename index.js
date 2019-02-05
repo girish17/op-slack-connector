@@ -42,41 +42,42 @@
           dialog: JSON.stringify(dialogData)
           };
           axios.post('https://slack.com/api/dialog.open', qs.stringify(dialog)).then((result) => {
-          console.log('dialog.open: %o', result.data);
-          /*set projectId for callback*/
-          projectId = actions.pop().selected_options.pop().value;
-            
+            console.log('dialog.open: %o', result.data);
+            /*set projectId for callback*/
+            projectId = actions.pop().selected_options.pop().value;
+            res.send('').status(200);  
+            return;
           }).catch((err) => {
-          console.log('dialog.open call failed: %o', err);
-          res.send("`Can't open dialog!`").status(500);
+            console.log('dialog.open call failed: %o', err);
+            res.send("`Can't open dialog!`").status(500);
           });
         }   
         else if(callback_id === "timeLogDialog")
         {
           if(type === "dialog_submission")
           {
-             const {submission} = JSON.parse(req.body.payload);
+            const {submission} = JSON.parse(req.body.payload);
               /*log time data to open project*/
               axios({
                 url: '/time_entries',
                 method: 'post',
                 baseURL: 'https://ranger.42hertz.com/api/v3',
                 data: {
-                   "_links": {
-                     "project": {
-                       "href": "/api/v3/projects/"+projectId
-                     },
-                     "activity": {
-                       "href": "/api/v3/time_entries/activities/"+submission.activity_id
-                     },
-                     "workPackage": {
-                       "href": "/api/v3/work_packages/"+submission.work_package_id
-                     }
-                   },
-                   "hours": hoursLog,
-                   "comment": submission.comments,
-                   "spentOn": submission.spent_on,
-                   "customField2": submission.billable_hours,
+                  "_links": {
+                    "project": {
+                      "href": "/api/v3/projects/"+projectId
+                    },
+                    "activity": {
+                      "href": "/api/v3/time_entries/activities/"+submission.activity_id
+                    },
+                    "workPackage": {
+                      "href": "/api/v3/work_packages/"+submission.work_package_id
+                    }
+                  },
+                  "hours": hoursLog,
+                  "comment": submission.comments,
+                  "spentOn": submission.spent_on,
+                  "customField2": submission.billable_hours,
                 },
                 auth: {
                   username: 'apikey',
@@ -90,7 +91,7 @@
           }
           else if(type === "dialog_cancellation")
           {
-             res.send("Time not logged!").status(400);
+            res.send("Time not logged!").status(400);
           }
           
         }
@@ -116,6 +117,8 @@
         else 
         {
           console.log('select project post failed!');
+          res.send().status(400);
+          return;
         }
       }).catch((err) => {
         console.log('message post failed: %o', err);
