@@ -1,6 +1,6 @@
 {
         "callback_id": "timeLogDialog",
-        "title": "Spent Time",
+        "title": "Additional details",
         "submit_label": "Save",
         "notify_on_cancel": true,
         "elements": [
