@@ -24,6 +24,27 @@
     id: '', name: ''
   };
 
+  function checkHours(txt)
+  {
+    /*check if hours are between 1 and 99*/
+    if(/^[1-9][0-9]{0,1}$/.test(txt))
+    {
+       return true;
+    }
+    else
+      return false;
+  }
+
+  function checkDate(dateTxt)
+  {
+    /*Valid dates within last one year*/
+    let dateDiff = moment().diff(moment(dateTxt, 'YYYY-MM-DD', true), 'days');
+    if(dateDiff >= 0 && dateDiff < 366)
+      return true;
+    
+    return false;
+  }
+
   app.post('/', (req, res) => {
     const {text, trigger_id, channel_id, user_id, payload, command} = req.body;
     console.log(JSON.stringify(req.body, null, 2));
@@ -45,7 +66,13 @@
         {
           if(type === "dialog_submission")
           {
-            handleSubmission(req, res);
+            if(handleSubmission(req, res))
+            {
+              res.send('').status(200);
+              return;
+            }
+            else
+              res.send("creation failed").status(400);
           }
           else if(type === "dialog_cancellation")
           {
@@ -180,63 +207,51 @@
   {
     const {submission} = JSON.parse(req.body.payload);
     /*validate for date and billable hours*/
-    if(checkDate(submission.spentOn) && checkHours(submission.billable_hours))
+    if(checkDate(submission.spent_on) && checkHours(submission.billable_hours))
     {
       /*log time data to open project*/
       axios({
         url: '/time_entries',
         method: 'post',
-        baseURL: 'https://ranger.42hertz.com/api/v3',
+        baseURL: 'http://localhost:8080/api/v3',
         data: {
           "_links": {
             "project": {
-              "href": "/api/v3/projects/"+project.id
+              "href": "/api/v3/projects/2"//+project.id
             },
             "activity": {
-              "href": "/api/v3/time_entries/activities/"+submission.activity_id
+              "href": "/api/v3/time_entries/activities/3"//+submission.activity_id
             },
             "workPackage": {
-              "href": "/api/v3/work_packages/"+submission.work_package_id
+              "href": "/api/v3/work_packages/30"//+submission.work_package_id
+            },
+            "user": {
+              "href": "/api/v3/users/1"
             }
           },
-          "hours": hoursLog,
+          "hours": "PT1H", //replace later with data in period format
           "comment": submission.comments,
           "spentOn": submission.spent_on,
           "customField2": submission.billable_hours,
         },
         auth: {
           username: 'apikey',
-          password: process.env.RANGER_ACCESS_TOKEN
+          password: process.env.RANGER_ACCESS_TOKEN_2
         }
       }).then((response) => {
           console.log("Time entry save response: %o", response);
+          //res.send('').status(200);
+          return true;
       }).catch((error) => {
         console.log("Ranger time entries create error: %o", error.message);
+        //res.send("").status(400);
+        return false;
       });
     }
     else
     {
       res.send("*Hmmm... Please check the date and billable hours*").status(400);
-    }
-  }
-
-  function checkHours(text)
-  {
-    /*check if hours are between 1 and 99*/
-    if(/^[1-9][0-9]{0,1}$/.test(text))
-    {
-       return true;
-    }
-    else
       return false;
+    }
   }
 
-  function checkDate(dateText)
-  {
-    /*Valid dates within last one year*/
-    let dateDiff = moment().diff(moment(dateText, 'YYYY-MM-DD', true), 'days');
-    if(dateDiff >= 0 && dateDiff < 366)
-      return true;
-    
-    return false;
-  }
