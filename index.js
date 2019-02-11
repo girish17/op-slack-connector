@@ -19,7 +19,7 @@
   var whenButton = require('./UI_Element_json/whenMsgBtn.json');
   var selProject = require('./UI_Element_json/selectProject.json');
 
-  let hoursLog = 0;
+  var hoursLog = 0;
   let project = {
     id: '', name: ''
   };
@@ -48,15 +48,17 @@
   app.post('/', (req, res) => {
     const {text, trigger_id, channel_id, user_id, payload, command} = req.body;
     console.log(JSON.stringify(req.body, null, 2));
-
-    if (!checkHours(text) && (command === "/logtime")) {
+    if(text != undefined)
+    {
+      hoursLog = parseInt(text);
+    }
+    if (!checkHours(hoursLog) && (command === "/logtime")) {
       // not a one or two-digit number
       res.send("*1 hour to 99 hours works well here :) Let's try again...* \n `/logtime [hours]`").status(400);
       return;
     }
     else if(payload)
     {
-        hoursLog = parseInt(text);
         const {trigger_id, callback_id, actions, type} = JSON.parse(payload);
         if(callback_id === "project_selection")
         {
@@ -153,6 +155,10 @@
     
   });
 
+  app.get('/', (req, res) => {
+      res.send("Hello there! Good to see you here :) We don't know what to show here yet!").status(200);
+  });
+
   function showSelProject(res, channel_id, user_id)
   {
     let selectProjectMsg = {
@@ -217,19 +223,19 @@
         data: {
           "_links": {
             "project": {
-              "href": "/api/v3/projects/2"//+project.id
+              "href": "/api/v3/projects/3"//+project.id
             },
             "activity": {
-              "href": "/api/v3/time_entries/activities/3"//+submission.activity_id
+              "href": "/api/v3/time_entries/activities/1"//+submission.activity_id
             },
             "workPackage": {
-              "href": "/api/v3/work_packages/30"//+submission.work_package_id
+              "href": "/api/v3/work_packages/42"//+submission.work_package_id
             },
             "user": {
               "href": "/api/v3/users/1"
             }
           },
-          "hours": "PT1H", //replace later with data in period format
+          "hours": moment.duration(hoursLog, 'h').toISOString(),
           "comment": submission.comments,
           "spentOn": submission.spent_on,
           "customField2": submission.billable_hours,
