@@ -16,7 +16,7 @@
   dotenv.load();
 
   var dialogData = require('./UI_Element_json/dlgData.json');
-  var whenButton = require('./UI_Element_json/whenMsgBtn.json');
+  var timeLoggedMsgBtn = require('./UI_Element_json/timeLoggedMsg.json');
   var selProject = require('./UI_Element_json/selectProject.json');
 
   var hoursLog = 0;
@@ -45,6 +45,37 @@
     return false;
   }
 
+  function showSuccessMsg(req, res)
+  {
+    let payload = JSON.parse(req.body.payload);
+    let logAgainMsg = {
+      token: process.env.BOT_ACCESS_TOKEN,
+      channel: payload.channel.id,
+      text: timeLoggedMsgBtn.text,
+      user: payload.user.id,
+      as_user: true,
+      attachments: JSON.stringify(timeLoggedMsgBtn.attachments)
+    };
+    axios.post('https://slack.com/api/chat.postEphemeral',
+    qs.stringify(logAgainMsg)).then((result) => {
+      console.log('message posted: %o', result);
+      if(result.data.ok)
+      {
+        res.send().status(200);
+        return;
+      }
+      else 
+      {
+        console.log('Log again message post failed!');
+        res.send().status(400);
+        return;
+      }
+    }).catch((err) => {
+      console.log('message post failed: %o', err);
+      res.send("`Can't send message`").status(500);
+    });
+  }
+
   app.post('/', (req, res) => {
     const {text, trigger_id, channel_id, user_id, payload, command} = req.body;
     console.log(JSON.stringify(req.body, null, 2));
@@ -70,7 +101,8 @@
           {
             if(handleSubmission(req, res))
             {
-              res.send('').status(200);
+              res.send().status(200);
+              showSuccessMsg(req, res);
               return;
             }
             else
@@ -80,6 +112,14 @@
           {
             res.send("Time not logged!").status(400);
           }   
+        }
+        else if(type === "interactive_message")
+        {
+            res.send().status(200);
+        }
+        else
+        {
+            res.send("Unknown type").status(400);
         }
     }
     else {
@@ -143,14 +183,6 @@
           res.send({"options": optArray}).status(200);
           return;
         });
-    }
-    if(callback_id === "when_button")
-    {
-
-    }
-    else
-    {
-
     }
     
   });
@@ -216,34 +248,34 @@
     if(checkDate(submission.spent_on) && checkHours(submission.billable_hours))
     {
       /*log time data to open project*/
-      axios({
-        url: '/time_entries',
-        method: 'post',
-        baseURL: 'http://localhost:8080/api/v3',
-        data: {
-          "_links": {
-            "project": {
-              "href": "/api/v3/projects/3"//+project.id
+      return  axios({
+          url: '/time_entries',
+          method: 'post',
+          baseURL: 'http://localhost:8080/api/v3',
+          data: {
+            "_links": {
+              "project": {
+                "href": "/api/v3/projects/3"//+project.id
+              },
+              "activity": {
+                "href": "/api/v3/time_entries/activities/1"//+submission.activity_id
+              },
+              "workPackage": {
+                "href": "/api/v3/work_packages/42"//+submission.work_package_id
+              },
+              "user": {
+                "href": "/api/v3/users/1"
+              }
             },
-            "activity": {
-              "href": "/api/v3/time_entries/activities/1"//+submission.activity_id
-            },
-            "workPackage": {
-              "href": "/api/v3/work_packages/42"//+submission.work_package_id
-            },
-            "user": {
-              "href": "/api/v3/users/1"
-            }
+            "hours": moment.duration(hoursLog, 'h').toISOString(),
+            "comment": submission.comments,
+            "spentOn": submission.spent_on,
+            "customField2": submission.billable_hours,
           },
-          "hours": moment.duration(hoursLog, 'h').toISOString(),
-          "comment": submission.comments,
-          "spentOn": submission.spent_on,
-          "customField2": submission.billable_hours,
-        },
-        auth: {
-          username: 'apikey',
-          password: process.env.RANGER_ACCESS_TOKEN_2
-        }
+          auth: {
+            username: 'apikey',
+            password: process.env.RANGER_ACCESS_TOKEN_2
+          }
       }).then((response) => {
           console.log("Time entry save response: %o", response);
           //res.send('').status(200);

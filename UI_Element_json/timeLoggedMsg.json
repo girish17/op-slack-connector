@@ -1,0 +1,14 @@
+{
+    "text": "*You are awesome!*",
+    "attachments": [
+        {
+            "text": "Time log saved succesfully.",
+            "fallback": "Time logged successfully",
+            "callback_id": "time_logged",
+            "color": "#3AA3E3",
+            "attachment_type": "default",
+            "username": "rangerbot",
+            "mrkdwn": true
+        }
+    ]
+}
