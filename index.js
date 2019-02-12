@@ -76,9 +76,39 @@
     });
   }
 
+  function showFailMsg(req, res)
+  {
+    let payload = JSON.parse(req.body.payload);
+    let failMsg = {
+      token: process.env.BOT_ACCESS_TOKEN,
+      channel: payload.channel.id,
+      text: "*Time entry save didn't work. Seems like Ranger server is down!*",
+      user: payload.user.id,
+      as_user: true
+    };
+    axios.post('https://slack.com/api/chat.postEphemeral',
+    qs.stringify(failMsg)).then((result) => {
+      console.log('message posted: %o', result);
+      if(result.data.ok)
+      {
+        res.send().status(200);
+        return;
+      }
+      else 
+      {
+        console.log('Fail message post failed!');
+        res.send().status(400);
+        return;
+      }
+    }).catch((err) => {
+      console.log('message post failed: %o', err);
+      res.send("`Can't send message`").status(500);
+    });
+  }
+
   app.post('/', (req, res) => {
     const {text, trigger_id, channel_id, user_id, payload, command} = req.body;
-    console.log(JSON.stringify(req.body, null, 2));
+    console.log("Request Body to / ", JSON.stringify(req.body, null, 2));
     if(text != undefined)
     {
       hoursLog = parseInt(text);
@@ -99,14 +129,7 @@
         {
           if(type === "dialog_submission")
           {
-            if(handleSubmission(req, res))
-            {
-              res.send().status(200);
-              showSuccessMsg(req, res);
-              return;
-            }
-            else
-              res.send("creation failed").status(400);
+            handleSubmission(req, res);
           }
           else if(type === "dialog_cancellation")
           {
@@ -248,7 +271,7 @@
     if(checkDate(submission.spent_on) && checkHours(submission.billable_hours))
     {
       /*log time data to open project*/
-      return  axios({
+      axios({
           url: '/time_entries',
           method: 'post',
           baseURL: 'http://localhost:8080/api/v3',
@@ -258,10 +281,10 @@
                 "href": "/api/v3/projects/3"//+project.id
               },
               "activity": {
-                "href": "/api/v3/time_entries/activities/1"//+submission.activity_id
+                "href": "/api/v3/time_entries/activities/"+submission.activity_id
               },
               "workPackage": {
-                "href": "/api/v3/work_packages/42"//+submission.work_package_id
+                "href": "/api/v3/work_packages/43"//+submission.work_package_id
               },
               "user": {
                 "href": "/api/v3/users/1"
@@ -278,18 +301,15 @@
           }
       }).then((response) => {
           console.log("Time entry save response: %o", response);
-          //res.send('').status(200);
+          res.send().status(200);
+          showSuccessMsg(req, res);
           return true;
       }).catch((error) => {
-        console.log("Ranger time entries create error: %o", error.message);
-        //res.send("").status(400);
+        console.log("Ranger time entries create error: %o", error);
+        res.send().status(400);
+        showFailMsg(req, res);
         return false;
       });
-    }
-    else
-    {
-      res.send("*Hmmm... Please check the date and billable hours*").status(400);
-      return false;
     }
   }
 
