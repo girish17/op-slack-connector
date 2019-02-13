@@ -1,8 +1,8 @@
 {
-    "text": "*You are awesome!*",
+    "text": "*You are awesome :smile: *",
     "attachments": [
         {
-            "text": "Time log saved succesfully.",
+            "text": "Time log saved succesfully",
             "fallback": "Time logged successfully",
             "callback_id": "time_logged",
             "color": "#3AA3E3",

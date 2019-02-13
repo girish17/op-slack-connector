@@ -20,8 +20,7 @@
             {
                 "type": "text",
                 "label": "Comment",
-                "name": "comments",
-                "optional": true
+                "name": "comments"
             },
             {
                 "type": "select",
@@ -58,8 +57,7 @@
                 "type": "text",
                 "subtype": "number",
                 "label": "Billable Hours",
-                "name": "billable_hours",
-                "optional": true
+                "name": "billable_hours"
             }
         ]
 }

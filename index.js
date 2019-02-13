@@ -23,6 +23,7 @@
   let project = {
     id: '', name: ''
   };
+  var msg_ts = '';
 
   function checkHours(txt)
   {
@@ -48,30 +49,32 @@
   function showSuccessMsg(req, res)
   {
     let payload = JSON.parse(req.body.payload);
-    let logAgainMsg = {
+    let successMsg = {
       token: process.env.BOT_ACCESS_TOKEN,
       channel: payload.channel.id,
       text: timeLoggedMsgBtn.text,
       user: payload.user.id,
+      ts: msg_ts,
       as_user: true,
       attachments: JSON.stringify(timeLoggedMsgBtn.attachments)
     };
-    axios.post('https://slack.com/api/chat.postEphemeral',
-    qs.stringify(logAgainMsg)).then((result) => {
+    axios.post('https://slack.com/api/chat.update',
+    qs.stringify(successMsg)).then((result) => {
       console.log('message posted: %o', result);
       if(result.data.ok)
       {
+        msg_ts = result.data.message_ts;
         res.send().status(200);
         return;
       }
       else 
       {
-        console.log('Log again message post failed!');
+        console.log('Show success message post failed!');
         res.send().status(400);
         return;
       }
     }).catch((err) => {
-      console.log('message post failed: %o', err);
+      console.log('Show success message post failed: %o', err);
       res.send("`Can't send message`").status(500);
     });
   }
@@ -84,9 +87,10 @@
       channel: payload.channel.id,
       text: "*Time entry save didn't work. Seems like Ranger server is down!*",
       user: payload.user.id,
+      ts: msg_ts,
       as_user: true
     };
-    axios.post('https://slack.com/api/chat.postEphemeral',
+    axios.post('https://slack.com/api/chat.update',
     qs.stringify(failMsg)).then((result) => {
       console.log('message posted: %o', result);
       if(result.data.ok)
@@ -96,18 +100,23 @@
       }
       else 
       {
-        console.log('Fail message post failed!');
+        console.log('Show fail message failed!');
         res.send().status(400);
         return;
       }
     }).catch((err) => {
-      console.log('message post failed: %o', err);
-      res.send("`Can't send message`").status(500);
+      console.log('Show fail message post failed: %o', err);
+      res.type("application/json").send(JSON.stringify({
+        "response_type": "ephemeral",
+        "replace_original": false,
+        "text": "Sorry, that didn't work. Please try again."
+      })).status(500);
     });
   }
 
   app.post('/', (req, res) => {
-    const {text, trigger_id, channel_id, user_id, payload, command} = req.body;
+    const {text, channel_id, user_id, payload, command} = req.body;
+
     console.log("Request Body to / ", JSON.stringify(req.body, null, 2));
     if(text != undefined)
     {
@@ -120,7 +129,7 @@
     }
     else if(payload)
     {
-        const {trigger_id, callback_id, actions, type} = JSON.parse(payload);
+        const {trigger_id, callback_id, actions, type, message_ts} = JSON.parse(payload);
         if(callback_id === "project_selection")
         {
            showDlg(res, trigger_id, actions);
@@ -225,11 +234,13 @@
       attachments: JSON.stringify(selProject.attachments)
     };
 
-    axios.post('https://slack.com/api/chat.postEphemeral',
+    axios.post('https://slack.com/api/chat.postMessage',
     qs.stringify(selectProjectMsg)).then((result) => {
-      console.log('message posted: %o', result);
+      console.log('select project message posted: %o', result);
       if(result.data.ok)
       {
+        console.log("setting global var msg_ts for use in show success/fail msg");
+        msg_ts = result.data.ts;
         res.send().status(200);
         return;
       }
@@ -241,7 +252,11 @@
       }
     }).catch((err) => {
       console.log('message post failed: %o', err);
-      res.send("`Can't send message`").status(500);
+      res.type("application/json").send(JSON.stringify({
+        "response_type": "ephemeral",
+        "replace_original": false,
+        "text": "Sorry, that didn't work. Please try again."
+      })).status(500);
     });
   }
 
@@ -284,7 +299,7 @@
                 "href": "/api/v3/time_entries/activities/"+submission.activity_id
               },
               "workPackage": {
-                "href": "/api/v3/work_packages/43"//+submission.work_package_id
+                "href": "/api/v3/work_packages/42"//+submission.work_package_id
               },
               "user": {
                 "href": "/api/v3/users/1"
