@@ -75,7 +75,11 @@
       }
     }).catch((err) => {
       console.log('Show success message post failed: %o', err);
-      res.send("`Can't send message`").status(500);
+      res.type("application/json").send(JSON.stringify({
+        "response_type": "ephemeral",
+        "replace_original": false,
+        "text": "Sorry, that didn't work. Please try again."
+      })).status(500);
     });
   }
 
@@ -281,7 +285,7 @@
 
   function handleSubmission(req, res)
   {
-    const {submission} = JSON.parse(req.body.payload);
+    const {submission, response_url} = JSON.parse(req.body.payload);
     /*validate for date and billable hours*/
     if(checkDate(submission.spent_on) && checkHours(submission.billable_hours))
     {
@@ -325,6 +329,20 @@
         showFailMsg(req, res);
         return false;
       });
+    }
+    else
+    {
+      axios.post(response_url, {
+        "text": "It seems that date or billable hours was incorrect :thinking_face:",
+        "attachments": [
+            {
+                "color": "F41B07",
+                "text":"Please try again :bug:"
+            }
+        ],
+        "response_type": "in_channel"
+     });
+     res.send().status(400);
     }
   }
 
