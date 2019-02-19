@@ -30,6 +30,16 @@
     /*check if hours are between 1 and 99*/
     if(/^[1-9][0-9]{0,1}$/.test(txt))
     {
+       if(hoursLog != 0)
+       {
+         /*Check for billable hours to be less than hours log*/
+         if(parseInt(txt) <= hoursLog)
+         {
+           return true;
+         }
+         else 
+           return false;
+       }
        return true;
     }
     else
