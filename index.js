@@ -180,10 +180,10 @@
       axios({
         url: '/projects',
         method: 'get',
-        baseURL: 'https://ranger.42hertz.com/api/v3',
+        baseURL: 'http://localhost:8080/api/v3',
         auth: {
           username: 'apikey',
-          password: process.env.RANGER_ACCESS_TOKEN
+          password: process.env.RANGER_ACCESS_TOKEN_2
         }
       }).then(function (response) {  
         console.log("Projects obtained from ranger: %o", response);
@@ -207,13 +207,13 @@
         axios({
           url: '/work_packages',
           method: 'get',
-          baseURL: 'https://ranger.42hertz.com/api/v3',
+          baseURL: 'http://localhost:8080/api/v3',
           params: {
             id: project.id
           }, 
           auth: {
             username: 'apikey',
-            password: process.env.RANGER_ACCESS_TOKEN
+            password: process.env.RANGER_ACCESS_TOKEN_2
           }
         }).then((response) => {  
           console.log("WP obtained from ranger: %o", response);
