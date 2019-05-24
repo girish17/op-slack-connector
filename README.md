@@ -1,3 +1,6 @@
 # ranger-slack-connector
-This app shall provide connector for Slack and Ranger (Open Project implementation) integration.
+This app shall provide connector for Slack and Open Project implementation integration.
+
+Currently supported feature:
+Log time using a Slack bot (Ranger) for a work-package in Open Project
 
