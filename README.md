@@ -4,5 +4,5 @@ This app shall provide connector for Slack and Open Project implementation integ
 Currently supported feature:
 Log time using a Slack bot for a work-package in Open Project
 
-![Demo](![Alt Text](rangerSlackDemo.gif))
+![Demo](rangerSlackDemo.gif)
 
