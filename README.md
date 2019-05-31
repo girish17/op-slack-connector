@@ -1,4 +1,4 @@
-# ranger-slack-connector
+# op-slack-connector
 This app shall provide connector for Slack and Open Project implementation integration.
 
 Currently supported feature:
