@@ -1,5 +1,8 @@
 {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 473e2f789c20ac44ad9731afb415263468e2c131
   "name": "op-slack-connector",
   "version": "0.0.1",
   "description": "Provides open-project connector in Slack",
