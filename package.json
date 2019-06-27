@@ -1,14 +1,14 @@
 {
-  "name": "ranger-slack-connector",
+
+  "name": "op-slack-connector",
   "version": "0.0.1",
-  "description": "Provides ranger (open-project) connector in Slack",
+  "description": "Provides open-project connector in Slack",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js"
   },
   "keywords": [
-    "ranger",
     "openproject",
     "connector",
     "slack"
