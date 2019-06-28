@@ -99,7 +99,7 @@
     let failMsg = {
       token: process.env.BOT_ACCESS_TOKEN,
       channel: payload.channel.id,
-      text: "*Time entry save didn't work. Seems like Ranger server is down!*",
+      text: "*Time entry save didn't work. Seems like OP server is down!*",
       user: payload.user.id,
       ts: msg_ts,
       as_user: true
@@ -183,10 +183,10 @@
         baseURL: 'http://localhost:8080/api/v3',
         auth: {
           username: 'apikey',
-          password: process.env.RANGER_ACCESS_TOKEN_2
+          password: process.env.OP_ACCESS_TOKEN_2
         }
       }).then(function (response) {  
-        console.log("Projects obtained from ranger: %o", response);
+        console.log("Projects obtained from OP: %o", response);
         let optArray = [];
         response.data._embedded.elements.forEach(element => {
           if(element.identifier.match(value.toLowerCase()))
@@ -213,10 +213,10 @@
           }, 
           auth: {
             username: 'apikey',
-            password: process.env.RANGER_ACCESS_TOKEN_2
+            password: process.env.OP_ACCESS_TOKEN_2
           }
         }).then((response) => {  
-          console.log("WP obtained from ranger: %o", response);
+          console.log("WP obtained from OP: %o", response);
           response.data._embedded.elements.forEach(element => {
             if(element.subject.toLowerCase().match(value.toLowerCase()))
             {
@@ -307,13 +307,13 @@
           data: {
             "_links": {
               "project": {
-                "href": "/api/v3/projects/3"//+project.id
+                "href": "/api/v3/projects/"+project.id
               },
               "activity": {
                 "href": "/api/v3/time_entries/activities/"+submission.activity_id
               },
               "workPackage": {
-                "href": "/api/v3/work_packages/42"//+submission.work_package_id
+                "href": "/api/v3/work_packages/"+submission.work_package_id
               },
               "user": {
                 "href": "/api/v3/users/1"
@@ -326,7 +326,7 @@
           },
           auth: {
             username: 'apikey',
-            password: process.env.RANGER_ACCESS_TOKEN_2
+            password: process.env.OP_ACCESS_TOKEN_2
           }
       }).then((response) => {
           console.log("Time entry save response: %o", response);
@@ -334,7 +334,7 @@
           showSuccessMsg(req, res);
           return true;
       }).catch((error) => {
-        console.log("Ranger time entries create error: %o", error);
+        console.log("OP time entries create error: %o", error);
         res.send().status(400);
         showFailMsg(req, res);
         return false;
