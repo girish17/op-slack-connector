@@ -12,3 +12,4 @@ Preferred IDE for development: [VS Code](https://code.visualstudio.com/Download)
 
 # Learning resources
 1. [Creating a Slack Command Bot from Scratch with Node.js & Distribute It](https://tutorials.botsfloor.com/creating-a-slack-command-bot-from-scratch-with-node-js-distribute-it-25cf81f51040)
+2. [Open project setup using docker](https://www.openproject.org/docker/)
