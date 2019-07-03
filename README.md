@@ -8,7 +8,7 @@ To see the flowchart: Open the [LogTimeFlow.xml](LogTimeFlow.xml) file in www.dr
 
 Preferred IDE for development: [VS Code](https://code.visualstudio.com/Download)
 
-![Demo](slackOpenProject.gif)
+![Demo](demo_op_slack_connector.gif)
 
 # Learning resources
 1. [Creating a Slack Command Bot from Scratch with Node.js & Distribute It](https://tutorials.botsfloor.com/creating-a-slack-command-bot-from-scratch-with-node-js-distribute-it-25cf81f51040)
