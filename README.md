@@ -2,9 +2,7 @@
 This app provides a connector for [Slack](https://api.slack.com/) and [Open Project](http://docs.openproject.org/apiv3-doc/) implementation integration.
 
 ## Currently supported feature:
-Log time using a Slack bot for a work-package in Open Project
-
-To see the flowchart: Open the [LogTimeFlow.xml](LogTimeFlow.xml) file in www.draw.io
+Log time using a Slack bot for a work-package in Open Project.
 
 # Dependencies
 1. IDE - VS Code
@@ -24,7 +22,8 @@ To see the flowchart: Open the [LogTimeFlow.xml](LogTimeFlow.xml) file in www.dr
 7. Using the above IP address create a Slack app and bot in https://api.slack.com and install it to the workspace
 8. Run the op-slack-connector code in VS code `^F5`
 9. Follow the demo below to test the working
-10. Make any code changes and raise a pull request 
+10. Make any code changes and raise a pull request
+11. To see the flowchart: Open the [LogTimeFlow.xml](LogTimeFlow.xml) file in www.draw.io
 
 # Demo
 ![Demo](demo_op_slack_connector.gif)
