@@ -7,7 +7,7 @@
             "callback_id": "time_logged",
             "color": "#3AA3E3",
             "attachment_type": "default",
-            "username": "rangerbot",
+            "username": "op-slack-bot",
             "mrkdwn": true
         }
     ]

@@ -1,0 +1,14 @@
+{
+    "text": "*That didn't work :pensive: Seems like OP server is down!*",
+    "attachments": [
+        {
+            "text": "*That didn't work :pensive: Seems like OP server is down!*",
+            "fallback": "*That didn't work :pensive: Seems like OP server is down!*",
+            "callback_id": "fail_msg",
+            "color": "#3AA3E3",
+            "attachment_type": "default",
+            "username": "op-slack-bot",
+            "mrkdwn": true
+        }
+    ]
+}
