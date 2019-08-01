@@ -4,13 +4,14 @@ This app provides a connector for [Slack](https://api.slack.com/) and [Open Proj
 ## Currently supported feature:
 Log time using a Slack bot for a work-package in Open Project.
 
-# Dependencies
+# Prerequisites
 1. IDE - VS Code
 2. Open project 8
 3. Slack app
 4. ngrok
 5. node express
 6. git
+7. docker
 
 # Setup and contribution guidelines
 1. Fork and `git clone` the repo using HTTPS
