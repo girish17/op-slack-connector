@@ -16,7 +16,7 @@ Log time using a Slack bot for a work-package in Open Project.
 # Setup and contribution guidelines
 1. Fork and `git clone` the repo using HTTPS
 2. Install [VS Code](https://code.visualstudio.com/Download)(Preferred IDE for development) and open the cloned directory
-3. Create a .env file in the home directory of project with OP_ACCESS_TOKEN_2 and BOT_ACCESS_TOKEN. These will be assigned to tokens obtained from Open Project and Slack after installation
+3. Create a `.env` file in the home directory of project with `OP_ACCESS_TOKEN_2` and `BOT_ACCESS_TOKEN`. These will be assigned to tokens obtained from Open Project and Slack after installation
 4. Install [Node](https://nodejs.org/en/download/) and [Node express](https://expressjs.com/) by running `npm install express --save`
 5. Install [Open project setup using docker](https://www.openproject.org/docker/) and launch it on a port
 6. Install [ngrok](https://ngrok.com/download) and run it (`ngrok http 3000`) to get a public IP address
