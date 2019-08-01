@@ -5,32 +5,32 @@ This app provides a connector for [Slack](https://api.slack.com/) and [Open Proj
 Log time using a Slack bot for a work-package in Open Project.
 
 # Prerequisites
-1. IDE - VS Code
-2. Open project 8
-3. Slack app
-4. ngrok
-5. node express
-6. git
-7. docker
+- IDE - VS Code
+- Open project 8
+- Slack app
+- ngrok
+- node express
+- git
+- docker
 
 # Setup and contribution guidelines
-1. Fork and `git clone` the repo using HTTPS
-2. Install [VS Code](https://code.visualstudio.com/Download)(Preferred IDE for development) and open the cloned directory
-3. Create a `.env` file in the home directory of project with `OP_ACCESS_TOKEN_2` and `BOT_ACCESS_TOKEN`. These will be assigned to tokens obtained from Open Project and Slack after installation
-4. Install [Node](https://nodejs.org/en/download/) and do the following: 
-  4.1 In the project root directory do `npm init` to generate a package.json file
-  4.2 Install [Node express](https://expressjs.com/) by running `npm install express --save` in the project root folder
-  4.3 Install [Nodemon](https://nodemon.io/) by running `npm install nodemon --save`. Helpful in hot-reload of source on server
-5. Install [Open project setup using docker](https://www.openproject.org/docker/) and launch it on a port
-6. Install [ngrok](https://ngrok.com/download) and run it (`ngrok http 3000`) to get a public IP address
-7. Using the above IP address create a Slack app and bot in https://api.slack.com and install it to the workspace
-8. Run the op-slack-connector code in VS code `^F5`
-9. Follow the demo below to test the working
-10. Make any code changes and raise a pull request
-11. To see the flowchart: Open the [LogTimeFlow.xml](LogTimeFlow.xml) file in www.draw.io
+- Fork and `git clone` the repo using HTTPS
+- Install [VS Code](https://code.visualstudio.com/Download)(Preferred IDE for development) and open the cloned directory
+- Create a `.env` file in the home directory of project with `OP_ACCESS_TOKEN_2` and `BOT_ACCESS_TOKEN`. These will be assigned to tokens obtained from Open Project and Slack after installation
+- Install [Node](https://nodejs.org/en/download/) and do the following -  
+  - In the project root directory do `npm init` to generate a package.json file
+  - Install [Node express](https://expressjs.com/) by running `npm install express --save` in the project root folder
+  - Install [Nodemon](https://nodemon.io/) by running `npm install nodemon --save`. Helpful in hot-reload of source on server
+- Install [Open project setup using docker](https://www.openproject.org/docker/) and launch it on a port
+- Install [ngrok](https://ngrok.com/download) and run it (`ngrok http 3000`) to get a public IP address
+- Using the above IP address create a Slack app and bot in https://api.slack.com and install it to the workspace
+- Run the op-slack-connector code in VS code `^F5`
+- Follow the demo below to test the working
+- Make any code changes and raise a pull request
+- To see the flowchart: Open the [LogTimeFlow.xml](LogTimeFlow.xml) file in www.draw.io
 
 # Demo
 ![Demo](demo_op_slack_connector.gif)
 
 # Learning resources
-1. [Creating a Slack Command Bot from Scratch with Node.js & Distribute It](https://tutorials.botsfloor.com/creating-a-slack-command-bot-from-scratch-with-node-js-distribute-it-25cf81f51040)
+- [Creating a Slack Command Bot from Scratch with Node.js & Distribute It](https://tutorials.botsfloor.com/creating-a-slack-command-bot-from-scratch-with-node-js-distribute-it-25cf81f51040)
