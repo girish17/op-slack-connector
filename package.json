@@ -13,7 +13,7 @@
     "slack"
   ],
   "author": "girish17",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
