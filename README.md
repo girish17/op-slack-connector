@@ -6,10 +6,10 @@ This app provides a connector for [Slack](https://api.slack.com/) and [Open Proj
 
 # Prerequisites
 - IDE - VS Code
-- Open project 8
+- OpenProject 8
 - Slack app
 - ngrok
-- node express
+- node
 - git
 - docker
 
@@ -21,6 +21,9 @@ This app provides a connector for [Slack](https://api.slack.com/) and [Open Proj
   - In the project root directory do `npm init` to generate a package.json file
   - Install [Node express](https://expressjs.com/) by running `npm install express --save` in the project root folder
   - Install [Nodemon](https://nodemon.io/) by running `npm install nodemon --save`. Helpful in hot-reload of source on server
+  - Install [Axios](https://www.npmjs.com/package/axios) `npm install axios --save`. Helpful in making `XMLHttpRequests`
+  - Install [QueryString](https://www.npmjs.com/package/query-string) `npm install querystring --save`
+  - Install [Moment](https://momentjs.com/) `npm install moment --save`. Used for date maninpulation
 - Install [Open project setup using docker](https://www.openproject.org/docker/) and launch it on a port
 - Install [ngrok](https://ngrok.com/download) and run it (`ngrok http 3000`) to get a public IP address
 - Using the above IP address create a Slack app and bot in https://api.slack.com and install it to the workspace
