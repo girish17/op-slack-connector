@@ -19,11 +19,7 @@ This app provides a connector for [Slack](https://api.slack.com/) and [Open Proj
 - Create a `.env` file in the home directory of project with `OP_ACCESS_TOKEN_2` and `BOT_ACCESS_TOKEN`. These will be assigned to tokens obtained from Open Project and Slack after installation
 - Install [Node](https://nodejs.org/en/download/) and do the following -  
   - In the project root directory do `npm init` to generate a package.json file
-  - Install [Node express](https://expressjs.com/) by running `npm install express --save` in the project root folder
-  - Install [Nodemon](https://nodemon.io/) by running `npm install nodemon --save`. Helpful in hot-reload of source on server
-  - Install [Axios](https://www.npmjs.com/package/axios) `npm install axios --save`. Helpful in making `XMLHttpRequests`
-  - Install [QueryString](https://www.npmjs.com/package/query-string) `npm install querystring --save`
-  - Install [Moment](https://momentjs.com/) `npm install moment --save`. Used for date maninpulation
+  - Install [Node express](https://expressjs.com/), [Nodemon](https://nodemon.io/), [Axios](https://www.npmjs.com/package/axios), [QueryString](https://www.npmjs.com/package/query-string) and [Moment](https://momentjs.com/) by running `npm install express nodemon axios query-string moment --save` in the project root folder
 - Install [Open project setup using docker](https://www.openproject.org/docker/) and launch it on a port
 - Install [ngrok](https://ngrok.com/download) and run it (`ngrok http 3000`) to get a public IP address
 - Using the above IP address create a Slack app and bot in https://api.slack.com and install it to the workspace
