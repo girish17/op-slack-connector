@@ -6,6 +6,10 @@ const qs = require('querystring');
 const moment = require('moment');
 const app = express();
 
+/*Below URL can be changed, currently using default settings*/
+const opURL = 'http://localhost:8080/api/v3';
+const slackURL = 'https://slack.com/api/';
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const server = app.listen(3000, () => {
@@ -63,7 +67,7 @@ function showSuccessMsg(req, res) {
     as_user: true,
     attachments: JSON.stringify(timeLoggedMsgBtn.attachments)
   };
-  axios.post('https://slack.com/api/chat.update',
+  axios.post(slackURL+'chat.update',
     qs.stringify(successMsg)).then((result) => {
       console.log('message posted: %o', result);
       if (result.data.ok) {
@@ -96,7 +100,7 @@ function showFailMsg(req, res) {
     as_user: true,
     attachments: JSON.stringify(failMsgBtn.attachments)
   };
-  axios.post('https://slack.com/api/chat.update',
+  axios.post(slackURL+'chat.update',
     qs.stringify(failMsg)).then((result) => {
       console.log('message posted: %o', result);
       if (result.data.ok) {
@@ -161,7 +165,7 @@ app.post('/getProjectsForUser', (req, res) => {
     axios({
       url: '/projects',
       method: 'get',
-      baseURL: 'http://localhost:8080/api/v3',
+      baseURL: opURL,
       auth: {
         username: 'apikey',
         password: process.env.OP_ACCESS_TOKEN_2
@@ -190,7 +194,7 @@ app.post('/getProjectsForUser', (req, res) => {
     axios({
       url: '/work_packages',
       method: 'get',
-      baseURL: 'http://localhost:8080/api/v3',
+      baseURL: opURL,
       params: {
         id: project.id
       },
@@ -231,7 +235,7 @@ function showSelProject(res, channel_id, user_id) {
     attachments: JSON.stringify(selProject.attachments)
   };
 
-  axios.post('https://slack.com/api/chat.postMessage',
+  axios.post(slackURL+'chat.postMessage',
     qs.stringify(selectProjectMsg)).then((result) => {
       console.log('select project message posted: %o', result);
       if (result.data.ok) {
@@ -261,7 +265,7 @@ function showDlg(res, trigger_id, actions) {
     trigger_id,
     dialog: JSON.stringify(dialogData)
   };
-  axios.post('https://slack.com/api/dialog.open', qs.stringify(dialog)).then((result) => {
+  axios.post(slackURL+'dialog.open', qs.stringify(dialog)).then((result) => {
     console.log('dialog.open: %o', result.data);
     /*set projectId for callback*/
     project.id = actions.pop().selected_options.pop().value;
@@ -281,7 +285,7 @@ function handleSubmission(req, res) {
     axios({
       url: '/time_entries',
       method: 'post',
-      baseURL: 'http://localhost:8080/api/v3',
+      baseURL: opURL,
       data: {
         "_links": {
           "project": {
