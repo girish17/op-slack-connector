@@ -7,7 +7,7 @@ const moment = require('moment');
 const app = express();
 
 /*Below URL can be changed, currently using default settings*/
-const opURL = 'http://localhost:8080/api/v3';
+const opURL = 'http://localhost:8080/api/v3/';
 const slackURL = 'https://slack.com/api/';
 
 app.use(bodyParser.json());
@@ -163,12 +163,12 @@ app.post('/getProjectsForUser', (req, res) => {
   const { callback_id, value, type } = JSON.parse(req.body.payload);
   if (callback_id === "project_selection") {
     axios({
-      url: '/projects',
+      url: 'projects',
       method: 'get',
       baseURL: opURL,
       auth: {
         username: 'apikey',
-        password: process.env.OP_ACCESS_TOKEN_2
+        password: process.env.OP_ACCESS_TOKEN
       }
     }).then((response) => {
       console.log("Projects obtained from OP: %o", response);
@@ -192,15 +192,12 @@ app.post('/getProjectsForUser', (req, res) => {
   if (callback_id === "timeLogDialog") {
     let optArray = [];
     axios({
-      url: '/work_packages',
+      url: 'projects/'+project.id+'/work_packages',
       method: 'get',
       baseURL: opURL,
-      params: {
-        id: project.id
-      },
       auth: {
         username: 'apikey',
-        password: process.env.OP_ACCESS_TOKEN_2
+        password: process.env.OP_ACCESS_TOKEN
       }
     }).then((response) => {
       console.log("WP obtained from OP: %o", response);
@@ -283,7 +280,7 @@ function handleSubmission(req, res) {
   if (checkDate(submission.spent_on) && checkHours(submission.billable_hours)) {
     /*log time data to open project*/
     axios({
-      url: '/time_entries',
+      url: 'time_entries',
       method: 'post',
       baseURL: opURL,
       data: {
@@ -302,13 +299,13 @@ function handleSubmission(req, res) {
           }
         },
         "hours": moment.duration(hoursLog, 'h').toISOString(),
-        "comment": submission.comments,
+        "comment":  submission.comments,
         "spentOn": submission.spent_on,
-        "customField2": submission.billable_hours,
+        "customField2": submission.billable_hours
       },
       auth: {
         username: 'apikey',
-        password: process.env.OP_ACCESS_TOKEN_2
+        password: process.env.OP_ACCESS_TOKEN
       }
     }).then((response) => {
       console.log("Time entry save response: %o", response);
