@@ -18,7 +18,7 @@ This proof-of-concept (middleware) provides a connector for [Slack](https://api.
 - Install [VS Code](https://code.visualstudio.com/Download)(Preferred IDE for development) and open the cloned directory
 - Create a `.env` file in the home directory of project with `OP_ACCESS_TOKEN_2` and `BOT_ACCESS_TOKEN`. These will be assigned to tokens obtained from Open Project and Slack after installation
 - Install [Node](https://nodejs.org/en/download/) and do the following -  
-  - In the project root directory do `npm init` to generate a package.json file or use update the existing one
+  - In the project root directory do `npm init` to generate a package.json file or update the existing one
 - Install [Open project setup using docker](https://www.openproject.org/docker/) and launch it on a port
 - Install [ngrok](https://ngrok.com/download) and run it (`ngrok http 3000`) to get a public IP address
 - Using the above IP address create a Slack app and bot in https://api.slack.com and install it to the workspace
