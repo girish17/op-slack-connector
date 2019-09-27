@@ -21,11 +21,11 @@ This proof-of-concept (middleware) provides a connector for [Slack](https://api.
   - In the project root directory do `npm init` to generate a package.json file or update the existing one
 - Install [Open project setup using docker](https://www.openproject.org/docker/) and launch it on a port
 - Install [ngrok](https://ngrok.com/download) and run it (`ngrok http 3000`) to get a public IP address
-- Using the above IP address create a Slack app and bot in https://api.slack.com and install it to the workspace
+- Using the above IP address create a Slack app and bot in [Slack](https://api.slack.com) and install it to the workspace
 - Run the op-slack-connector code in VS code `^F5`
 - Follow the demo below to test the working
 - Make any code changes and raise a pull request
-- To see the flowchart: Open the [LogTimeFlow.xml](LogTimeFlow.xml) file in www.draw.io
+- To see the flowchart: Open the [LogTimeFlow.xml](LogTimeFlow.xml) file in [Draw.io](http://draw.io)
 
 # Demo
 ![Demo](demo_op_slack_connector.gif)
