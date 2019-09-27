@@ -34,4 +34,4 @@ This proof-of-concept (middleware) provides a connector for [Slack](https://api.
 - [Creating a Slack Command Bot from Scratch with Node.js & Distribute It](https://tutorials.botsfloor.com/creating-a-slack-command-bot-from-scratch-with-node-js-distribute-it-25cf81f51040)
 
 # Sponsor
-Donations accpeted [here](https://paypal.me/girish17?locale.x=en_GB)
+Donations accepted [here](https://paypal.me/girish17?locale.x=en_GB)
