@@ -293,9 +293,6 @@ function handleSubmission(req, res) {
           },
           "workPackage": {
             "href": "/api/v3/work_packages/" + submission.work_package_id
-          },
-          "user": {
-            "href": "/api/v3/users/1"
           }
         },
         "hours": moment.duration(hoursLog, 'h').toISOString(),
