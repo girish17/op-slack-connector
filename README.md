@@ -27,6 +27,9 @@ This proof-of-concept (middleware) provides a connector for [Slack](https://api.
 - Make any code changes and raise a pull request
 - To see the flowchart: Open the [LogTimeFlow.xml](LogTimeFlow.xml) file in [Draw.io](http://draw.io)
 
+# Setup using Docker
+`docker pull girish17/op-slack-connector:latest`
+
 # Demo
 ![Demo](demo_op_slack_connector.gif)
 
