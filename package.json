@@ -1,5 +1,5 @@
 {
-  "name": "op-slack-connector",
+  "name": "@girish17/op-slack-connector",
   "version": "0.0.1",
   "description": "Provides open-project connector in Slack",
   "main": "index.js",
@@ -14,6 +14,10 @@
   ],
   "author": "girish17",
   "license": "MIT",
+  "repository": {
+	  "type": "git",
+	  "url": "git://github.com/girish17/op-slack-connector.git"
+  },
   "dependencies": {
     "axios": "^0.18.1",
     "body-parser": "^1.18.3",
@@ -22,5 +26,6 @@
     "express": "^4.16.4",
     "moment": "^2.24.0",
     "querystring": "^0.2.0"
-  }
+  },
+  "publishConfig": {"registry": "https://npm.pkg.github.com/"}
 }
