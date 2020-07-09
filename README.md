@@ -26,7 +26,62 @@ This proof-of-concept provides an integration for [Slack](https://api.slack.com/
 8. Run the op-slack-connector code in VS code `Ctrl + F5`
 9. Follow the demo below to test the working. For more information on developing a Slack command bot, refer [Learning resources](#learning-resources)
 10. Make any code changes and raise a pull request
-11. To see the flowchart: Open the [LogTimeFlow.xml](LogTimeFlow.xml) file in [Draw.io](http://draw.io)
+11. To see the flowchart: Open the [LogTimeFlow.xml](LogTimeFlow.xml) file in [Draw.io](http://draw.io), or see below -
+
+                                                                  ...........
+                                                               ..             ..
+                                                            ..                   ..
+                                                   ------>.    /logtime [hours]     .
+                                                   |       ..                    ..
+                                                   |          ..              ..
+                                                   |             ............
+                                                   |                  |
+                                                   |                  |
+                                                   |                  |
+                                                   |                  v
+                                                   |                 /  \
+                                                   |               /      \
+                                                   |             /          \
+                                                   |           / hours valid? \
+                                                   ----------- \              /
+                                                                 \          /
+                                                                   \      /
+                                                                     \  /
+                                                                      |
+                                                                      |
+                                                                      |
+                                                                      v
+                                                            ----------------------
+                                                           |                      |
+                                                           |     Show project     |
+                                                           |     select with      |
+                                                           |     search bar       |
+                                                           |                      |
+                                                            ----------------------
+                                                                      |
+                                                                      |
+                                                                      |
+                                                                      v
+                                                            ----------------------
+                                                           |                      |
+                                                           |    Show dialog to    |
+                                                           |    enter details     |<------
+                                                           |                      |      |
+                                                           |                      |      |
+                                                            ----------------------       |
+                                                                      |                  |
+                                                                      |                  |
+                                                                      |                  |
+                                                                      v                  |
+                                                                     / \                 |
+                                                                   /     \               |
+                                                                 /         \             |
+                                                               /   All OK?   \<-----------
+                                                               \ (validation)/
+                                                                 \         /
+                                                                   \     /
+                                                                     \ /
+                                                                      
 
 # Setup using Docker
 `docker pull girish17/op-slack-connector:latest`
