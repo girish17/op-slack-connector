@@ -24,7 +24,7 @@ This proof-of-concept provides an integration for [Slack](https://api.slack.com/
 6. Install [ngrok](https://ngrok.com/download) and run it (`ngrok http 3000`) to get a public IP address
 7. Using the above IP address create a Slack app and bot in [Slack](https://api.slack.com) and install it to the workspace
 8. Run the op-slack-connector code in VS code `Ctrl + F5`
-9. Follow the demo below to test the working
+9. Follow the demo below to test the working. For more information on developing a Slack command bot, refer [Learning resources](#learning-resources)
 10. Make any code changes and raise a pull request
 11. To see the flowchart: Open the [LogTimeFlow.xml](LogTimeFlow.xml) file in [Draw.io](http://draw.io)
 
