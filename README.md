@@ -1,5 +1,5 @@
 # op-slack-connector
-This proof-of-concept (middleware) provides a connector for [Slack](https://api.slack.com/) and [Open Project](https://docs.openproject.org/api/) implementation integration.
+This proof-of-concept provides an integration for [Slack](https://api.slack.com/) and [Open Project](https://docs.openproject.org/api/).
 
 ## Currently supported feature:
 - Log time using a Slack bot for a work-package in Open Project.
