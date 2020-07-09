@@ -81,7 +81,18 @@ This proof-of-concept provides an integration for [Slack](https://api.slack.com/
                                                                  \         /
                                                                    \     /
                                                                      \ /
-                                                                      
+                                                                      |
+                                                                      |
+                                                                      |
+                                                                      v
+                                                                 ..............
+                                                               .                .
+                                                             .                     .
+                                                           .                         .
+                                                          .   Save to OpenProject    . 
+                                                            .                      . 
+                                                              .                  . 
+                                                                 ...............
 
 # Setup using Docker
 `docker pull girish17/op-slack-connector:latest`
