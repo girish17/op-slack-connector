@@ -76,7 +76,7 @@ This proof-of-concept provides an integration for [Slack](https://api.slack.com/
                                                                      / \                 |
                                                                    /     \               |
                                                                  /         \             |
-                                                               /   All OK?   \<-----------
+                                                               /   All OK?   \------------
                                                                \ (validation)/
                                                                  \         /
                                                                    \     /
