@@ -19,7 +19,7 @@
 	  "url": "git://github.com/girish17/op-slack-connector.git"
   },
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "body-parser": "^1.18.3",
     "debug": "^4.1.1",
     "dotenv": "^6.2.0",
